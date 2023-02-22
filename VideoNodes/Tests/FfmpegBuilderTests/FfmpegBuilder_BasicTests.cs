@@ -1531,6 +1531,45 @@ public class FfmpegBuilder_BasicTests : TestBase
         Assert.AreEqual(2, result1);
         Assert.AreEqual(2, result);
     }
+    
+    
+    [TestMethod]
+    public void FfmpegBuilder_Basic_FontsCopied()
+    {
+        const string file = @"/home/john/Videos/unprocessed/extra-streams.mkv";
+        var logger = new TestLogger();
+        const string ffmpeg = @"/usr/bin/ffmpeg";
+        var vi = new VideoInfoHelper(ffmpeg, logger);
+        var vii = vi.Read(file);
+        var args = new NodeParameters(file, logger, false, string.Empty);
+        args.GetToolPathActual = (string tool) => ffmpeg;
+        args.TempPath = @"/home/john/Videos/temp";
+        args.Parameters.Add("VideoInfo", vii);
+
+        FfmpegBuilderStart ffStart = new();
+        ffStart.PreExecute(args);
+        Assert.AreEqual(1, ffStart.Execute(args));
+
+        FfmpegBuilderVideoEncode ffEncode = new();
+        ffEncode.Codec = "h265 10BIT";
+        ffEncode.Quality = 28;
+        ffEncode.HardwareEncoding = false;
+        ffEncode.PreExecute(args);
+        ffEncode.Execute(args);
+
+        FfmpegBuilderExecutor ffExecutor = new();
+        ffExecutor.HardwareDecoding = true;
+        ffExecutor.PreExecute(args);
+        int result = ffExecutor.Execute(args);
+
+        string log = logger.ToString();
+        Assert.AreEqual(1, result);
+        Assert.AreNotEqual(file, args.WorkingFile);
+        
+        var vii2 = vi.Read(args.WorkingFile);
+        Assert.AreEqual(2, vii2.Attachments.Count);
+    }
+
 }
 
 #endif

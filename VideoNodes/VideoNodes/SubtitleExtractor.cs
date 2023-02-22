@@ -12,6 +12,7 @@
         public override int Outputs => 2;
 
         public override string Icon => "fas fa-comment-dots";
+        public override string HelpUrl => "https://docs.fileflows.com/plugins/video-nodes/subtitle-extractor";
 
         [Text(1)]
         public string Language { get; set; }

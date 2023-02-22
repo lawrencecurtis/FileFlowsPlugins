@@ -473,10 +473,10 @@
         }
       },
       "SubtitleExtractor": {
-        "Description": "Extract a single subtitle tracks and saves it to the destination.  Can extract srt, ass, and ssa format.\nThis will NOT update the working file, and will keep the working file the same as the input file.\n\nOutput 1: Subtitles were extracted\nOutput 2: No subtitles found to extract",
+        "Description": "Extract a single subtitle tracks and saves it to the destination.  Can extract srt, ass, and ssa format.\n\nOutput 1: Subtitle extracted\nOutput 2: No subtitle extracted",
         "Outputs": {
-          "1": "Subtitles extracted",
-          "2": "No subtitles extracted"
+          "1": "Subtitle extracted",
+          "2": "No subtitle extracted"
         },
         "Fields": {
           "Language": "Language",

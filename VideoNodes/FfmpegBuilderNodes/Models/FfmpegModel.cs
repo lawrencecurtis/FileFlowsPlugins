@@ -3,24 +3,43 @@
     public class FfmpegModel
     {
         private List<FfmpegVideoStream> _VideoStreams = new List<FfmpegVideoStream>();
+        /// <summary>
+        /// Gets or sets the video streams
+        /// </summary>
         public List<FfmpegVideoStream> VideoStreams
         {
             get => _VideoStreams;
             set => _VideoStreams = value ?? new List<FfmpegVideoStream>();
         }
         private List<FfmpegAudioStream> _AudioStreams = new List<FfmpegAudioStream>();
+        /// <summary>
+        /// Gets or sets the audio streams
+        /// </summary>
         public List<FfmpegAudioStream> AudioStreams
         {
             get => _AudioStreams;
             set => _AudioStreams = value ?? new List<FfmpegAudioStream>();
         }
         private List<FfmpegSubtitleStream> _SubtitleStreams = new List<FfmpegSubtitleStream>();
+        /// <summary>
+        /// Gets or sets the subtitle streams
+        /// </summary>
         public List<FfmpegSubtitleStream> SubtitleStreams
         {
             get => _SubtitleStreams;
             set => _SubtitleStreams = value ?? new List<FfmpegSubtitleStream>();
         }
 
+        private List<FfmpegAttachmentStream> _AttachmentStreams = new ();
+        /// <summary>
+        /// Gets or sets the attachment streams
+        /// </summary>
+        public List<FfmpegAttachmentStream> AttachmentStreams
+        {
+            get => _AttachmentStreams;
+            set => _AttachmentStreams = value ?? new List<FfmpegAttachmentStream>();
+        }
+        
         private List<string> _MetadataParameters = new List<string>();
         public List<string> MetadataParameters
         {
@@ -95,6 +114,16 @@
                     Title = item.stream.Title,
                     Language = item.stream.Language,
                     Stream = item.stream,
+                });
+            }
+            
+            foreach (var item in info.Attachments.Select((stream, index) => (stream, index)))
+            {
+                model.AttachmentStreams.Add(new FfmpegAttachmentStream()
+                {
+                    Index = item.index,
+                    Title = item.stream.Title,
+                    Stream = item.stream
                 });
             }
 
